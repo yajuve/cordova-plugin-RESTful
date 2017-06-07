@@ -14,19 +14,31 @@ public class RESTful extends CordovaPlugin {
 
     @Override
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
-        if (action.equals("coolMethod")) {
-            String message = args.getString(0);
-            this.coolMethod(message, callbackContext);
+        if (action.equals("get")) {
+            String param = args.getString(0);
+            this.get(param, callbackContext);
+            return true;
+        }else if (action.equals("post")) {
+            String param = args.getString(0);
+            this.post(message, callbackContext);
             return true;
         }
         return false;
     }
 
-    private void coolMethod(String message, CallbackContext callbackContext) {
-        if (message != null && message.length() > 0) {
-            callbackContext.success(message);
+    private void get(String param, CallbackContext callbackContext) {
+        if (param != null && param.length() > 0) {
+            callbackContext.success(param);
         } else {
-            callbackContext.error("Expected one non-empty string argument.");
+            callbackContext.error("Get, Expected one non-empty string argument.");
+        }
+    }
+
+    private void post(String param, CallbackContext callbackContext) {
+        if (param != null && param.length() > 0) {
+            callbackContext.success(param);
+        } else {
+            callbackContext.error("Post, Expected one non-empty string argument.");
         }
     }
 }
