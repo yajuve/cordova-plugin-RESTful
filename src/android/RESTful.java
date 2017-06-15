@@ -63,8 +63,11 @@ public class RESTful extends CordovaPlugin {
                 @Override
                 public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                     // called when response HTTP status is "4XX" (eg. 401, 403, 404)
-                    callbackContext.error("onFailure");
-                    System.out.println("Get, onFailure");
+                    String errorMsg = "GET, onFailure\n"+
+                    "\nstatusCode: "+Integer.toString(statusCode)+
+                    "\nJSONObject.errorResponse: "+errorResponse.toString()+
+                    "";
+                    callbackContext.error(errorMsg);
                 }
 
                 @Override
