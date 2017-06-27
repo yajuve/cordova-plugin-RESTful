@@ -44,8 +44,54 @@ public class RESTful extends CordovaPlugin {
             String body = args.getString(3);
             this.post(user, pass, url, body, callbackContext);
             return true;
+        }else if (action.equals("checkAdmin")) {
+            String user = args.getString(0);
+            String pass = args.getString(1);
+            String url  = args.getString(2);
+            this.checkAdmin(user, pass, url, callbackContext);
+            return true;
         }
         return false;
+    }
+
+
+    private void checkAdmin(String user, String pass, String url, final CallbackContext callbackContext) {
+        if (user != null && user.length() > 0 || pass != null && pass.length() > 0 || url != null && url.length() > 0) {
+
+            client.setBasicAuth(user, pass);
+            client.get(url, new AsyncHttpResponseHandler() {
+
+                @Override
+                public void onStart() {
+                    // called before request is started
+                }
+
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, byte[] response) {
+                    // called when response HTTP status is "200 OK"
+                    String resp = new String(response);
+                    callbackContext.success(resp);
+                }
+
+                @Override
+                public void onFailure(int statusCode, Header[] headers, byte[] errorResponse, Throwable e) {
+                    // called when response HTTP status is "4XX" (eg. 401, 403, 404)
+                    String errorMsg = "checkAdmin, onFailure\n"+
+                    "\nstatusCode: "+Integer.toString(statusCode)+
+                    "\nJSONObject.errorResponse: "+new String(errorResponse)+
+                    "";
+                    callbackContext.error(errorMsg);
+                }
+
+                @Override
+                public void onRetry(int retryNo) {
+                    // called when request is retried
+                }
+            });
+
+        } else {
+            callbackContext.error("CheckAdmin, needs 3 arguments : user: String, pass: String, url: String.");
+        }
     }
 
     private void get(String user, String pass, String url, final CallbackContext callbackContext) {

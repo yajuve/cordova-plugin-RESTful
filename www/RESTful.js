@@ -8,3 +8,8 @@ exports.post = function(arg0, arg1, arg2, arg3, success, error) {
     exec(success, error, "RESTful", "post", [arg0, arg1, arg2, arg3]);
 };
 
+exports.checkAdmin = function(arg0, arg1, arg2, success, error) {
+    exec(success, error, "RESTful", "checkAdmin", [arg0, arg1, arg2]);
+};
+
+
