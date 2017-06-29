@@ -1,9 +1,23 @@
 ---
 title: Cordova Plugin RESTful 
 description: Cordova plugin to use RESTful API.
+version: 0.0.2
 ---
 
+# Cordova Plugin RESTful 
+* [Instalation](#instalation)
+* [Supported platforms](#supported-platforms)
+* [How to use](#how-to-use)
+* [Full example Ionic2 / Angular2](#full-example-ionic2-angular2)
+
 # Instalation
+Open terminal
+```shell
+npm install cordova-plugin-restful
+```
+
+# Supported platforms
+* Android 
 
 # How to use
 ## Get
@@ -46,10 +60,7 @@ export class RestPage {
   private pass: string = 'yourPass';
   private url : string = 'http://example.com/rest';
 
-  constructor(
-    public navCtrl: NavController,
-    public navParams: NavParams,
-  )
+  constructor(public navCtrl: NavController, public navParams: NavParams)
   { }
 
   get() {
