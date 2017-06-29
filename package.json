@@ -14,7 +14,9 @@
   },
   "keywords": [
     "ecosystem:cordova",
-    "cordova-android"
+    "cordova-android",
+    "RESTful",
+    "api"
   ],
   "author": "K.Mohamed Raouf",
   "license": "MIT",
