@@ -9,6 +9,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -16,6 +17,7 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
 import cz.msebera.android.httpclient.Header;
+import cz.msebera.android.httpclient.conn.ConnectTimeoutException;
 import cz.msebera.android.httpclient.entity.ByteArrayEntity;
 import cz.msebera.android.httpclient.message.BasicHeader;
 import cz.msebera.android.httpclient.protocol.HTTP;
@@ -54,48 +56,8 @@ public class RESTful extends CordovaPlugin {
         return false;
     }
 
-
-    private void checkAdmin(String user, String pass, String url, final CallbackContext callbackContext) {
-        if (user != null && user.length() > 0 || pass != null && pass.length() > 0 || url != null && url.length() > 0) {
-
-            client.setBasicAuth(user, pass);
-            client.get(url, new AsyncHttpResponseHandler() {
-
-                @Override
-                public void onStart() {
-                    // called before request is started
-                }
-
-                @Override
-                public void onSuccess(int statusCode, Header[] headers, byte[] response) {
-                    // called when response HTTP status is "200 OK"
-                    String resp = new String(response);
-                    callbackContext.success(resp);
-                }
-
-                @Override
-                public void onFailure(int statusCode, Header[] headers, byte[] errorResponse, Throwable e) {
-                    // called when response HTTP status is "4XX" (eg. 401, 403, 404)
-                    String errorMsg = "checkAdmin, onFailure\n"+
-                    "\nstatusCode: "+Integer.toString(statusCode)+
-                    "\nJSONObject.errorResponse: "+new String(errorResponse)+
-                    "";
-                    callbackContext.error(errorMsg);
-                }
-
-                @Override
-                public void onRetry(int retryNo) {
-                    // called when request is retried
-                }
-            });
-
-        } else {
-            callbackContext.error("CheckAdmin, needs 3 arguments : user: String, pass: String, url: String.");
-        }
-    }
-
     private void get(String user, String pass, String url, final CallbackContext callbackContext) {
-        if (user != null && user.length() > 0) {
+        if (user != null && user.length() > 0 || pass != null && pass.length() > 0 || url != null && url.length() > 0) {
 
             client.setBasicAuth(user, pass);
             client.get(url, null, new JsonHttpResponseHandler() {
@@ -114,6 +76,10 @@ public class RESTful extends CordovaPlugin {
                     "\nJSONObject.errorResponse: "+errorResponse.toString()+
                     "";
                     callbackContext.error(errorMsg);
+                }
+
+                public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                    callbackContext.error(responseString);
                 }
 
                 @Override
@@ -147,6 +113,7 @@ public class RESTful extends CordovaPlugin {
                         System.out.println(timeline.toString());
 
                     } catch (Exception e) {
+                        callbackContext.error("catch error onSuccess (JSONObject)");
                         e.printStackTrace();
                     }
                 }
@@ -154,13 +121,13 @@ public class RESTful extends CordovaPlugin {
             });
 
         } else {
-            callbackContext.error("Get, Expected one non-empty string argument.");
+           callbackContext.error("Get, needs 3 arguments : user: String, pass: String, url: String.");
         }
-    }
+    }// post
 
     private void post(String user, String pass, String url, String body, final CallbackContext callbackContext) {
 
-        if (user != null && user.length() > 0) {
+        if (user != null && user.length() > 0 || pass != null && pass.length() > 0 || url != null && url.length() > 0 || body != null && body.length() > 0) {
 
             client.setBasicAuth(user, pass);
 
@@ -216,7 +183,51 @@ public class RESTful extends CordovaPlugin {
             });
 
         } else {
-            callbackContext.error("Post, Expected one non-empty string argument.");
+            callbackContext.error("Post, needs 4 arguments : user: String, pass: String, url: String, body: String.");
         }
-    }
+    }// post
+
+     private void checkAdmin(String user, String pass, String url, final CallbackContext callbackContext) {
+        if (user != null && user.length() > 0 || pass != null && pass.length() > 0 || url != null && url.length() > 0) {
+
+            client.setBasicAuth(user, pass);
+            client.setConnectTimeout(2000);
+
+            client.get(url, new AsyncHttpResponseHandler() {
+
+                @Override
+                public void onStart() {
+                    // called before request is started
+                }
+
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, byte[] response) {
+                    // called when response HTTP status is "200 OK"
+                    String resp = new String(response);
+                    callbackContext.success(resp);
+                }
+
+                @Override
+                public void onFailure(int statusCode, Header[] headers, byte[] errorResponse, Throwable e) {
+                    // called when response HTTP status is "4XX" (eg. 401, 403, 404)
+                    String errorMsg = "checkAdmin, onFailure\n" +
+                            "\nstatusCode: " + Integer.toString(statusCode) +
+                            "\nJSONObject.errorResponse: " + new String(errorResponse) +
+                            "";
+    
+                    callbackContext.error(errorMsg);
+                }
+
+                @Override
+                public void onRetry(int retryNo) {
+                    // called when request is retried
+                }
+            });
+
+
+        } else {
+            callbackContext.error("CheckAdmin, needs 3 arguments : user: String, pass: String, url: String.");
+        }
+    }// checkAdmin
+
 }
