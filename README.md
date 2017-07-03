@@ -5,12 +5,20 @@ version: 0.0.2
 ---
 
 # Cordova Plugin RESTful 
+Cordova plugin RESTful helps you to use http request with basic authentication
 * [Instalation](#instalation)
 * [Supported platforms](#supported-platforms)
 * [How to use](#how-to-use)
 * [Full example Ionic2 / Angular2](#full-example-ionic2-angular2)
 
 # Instalation
+## Cordova CLI
+Open terminal
+
+```shell
+cordova plugin add cordova-plugin-restful --save
+```
+## NPM
 Open terminal
 ```shell
 npm install cordova-plugin-restful
