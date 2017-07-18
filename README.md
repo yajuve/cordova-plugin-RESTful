@@ -1,8 +1,3 @@
----
-title: Cordova Plugin RESTful 
-description: Cordova plugin to use RESTful API.
-version: 0.0.2
----
 
 # Cordova Plugin RESTful 
 Cordova plugin RESTful helps you to use http request with basic authentication
@@ -29,7 +24,7 @@ npm install cordova-plugin-restful
 
 # How to use
 ## Get
-
+### Basic authenticaton (User & Password)
 ```javascript
 cordova.plugins.RESTful.get(user, pass, url, (resp) => {
         console.log('Success call get');
@@ -38,7 +33,15 @@ cordova.plugins.RESTful.get(user, pass, url, (resp) => {
         console.error(err)
     });
 ```
-
+### Without basic authenticaton
+```javascript
+cordova.plugins.RESTful.getSimple(url, (resp) => {
+        console.log('Success call get');
+    }, (err) => {
+        // Handle error
+        console.error(err)
+    });
+```
 ## Post
 
 ```javascript

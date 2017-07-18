@@ -1,6 +1,6 @@
 {
   "name": "cordova-plugin-restful",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Use RESTful api with your cordova, ionic project",
   "cordova": {
     "id": "cordova-plugin-restful",
