@@ -51,6 +51,10 @@ public class RESTful extends CordovaPlugin {
             String url = args.getString(2);
             this.get(user, pass, url, callbackContext);
             return true;
+        } else if (action.equals("getSimple")) {
+            String url = args.getString(0);
+            this.get(url, callbackContext);
+            return true;
         } else if (action.equals("post")) {
             String user = args.getString(0);
             String pass = args.getString(1);
