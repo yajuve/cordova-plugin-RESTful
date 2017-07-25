@@ -45,7 +45,7 @@ cordova.plugins.RESTful.getSimple(url, (resp) => {
 ## Post
 
 ```javascript
-cordova.plugins.RESTful.post(user, pass, url, body, (resp) => {
+cordova.plugins.RESTful.post(user, pass, url, body, timeout, (resp) => {
         console.log('Success send post');
     }, (err) => {
         // Handle error
