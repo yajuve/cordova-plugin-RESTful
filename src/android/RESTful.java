@@ -60,7 +60,8 @@ public class RESTful extends CordovaPlugin {
             String pass = args.getString(1);
             String url  = args.getString(2);
             String body = args.getString(3);
-            this.post(user, pass, url, body, callbackContext);
+            int timeout = args.getInt(4);
+            this.post(user, pass, url, body, timeout, callbackContext);
             return true;
         }else if (action.equals("checkAdmin")) {
             String user = args.getString(0);
@@ -163,11 +164,12 @@ public class RESTful extends CordovaPlugin {
         }
     }// get
 
-    private void post(String user, String pass, String url, String body, final CallbackContext callbackContext) {
+    private void post(String user, String pass, String url, String body, int timeout, final CallbackContext callbackContext) {
 
         if (user != null && user.length() > 0 || pass != null && pass.length() > 0 || url != null && url.length() > 0 || body != null && body.length() > 0) {
 
             client.setBasicAuth(user, pass);
+            client.setTimeout(timeout);
             final String urlMsg = url;  
 
             String jsonString   = body;
